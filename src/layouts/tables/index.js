@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
+
 function ArticuloTable() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
