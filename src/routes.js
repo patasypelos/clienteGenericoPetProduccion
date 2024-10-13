@@ -59,7 +59,7 @@ import Cube from "examples/Icons/Cube";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Inicio",
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
@@ -77,7 +77,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
+    name: "Inventario",
     key: "tables",
     route: "/tables",
     icon: <Office size="12px" />,
@@ -86,7 +86,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing",
+    name: "Registrar venta",
     key: "billing",
     route: "/billing",
     icon: <CreditCard size="12px" />,
