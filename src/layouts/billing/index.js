@@ -19,6 +19,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import $ from 'jquery';
+import 'select2';
+import 'select2/dist/css/select2.css';
 
 function Billing() {
   const [formData, setFormData] = useState({
@@ -40,9 +43,12 @@ function Billing() {
   const [error, setError] = useState(null);
   const [mensaje, setMensaje] = useState(''); // Para mostrar el mensaje de venta registrada
 
+  
+
   const baseUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
    
+    $('#purinaSelect').select2();
 
     fetch(`${baseUrl}/VentasController/GetConsultarListaPurinas`)
       .then(response => response.json())
