@@ -5,7 +5,9 @@ import SoftTypography from 'components/SoftTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import Footer from 'examples/Footer';
-
+import $ from 'jquery';
+import 'select2';
+import 'select2/dist/css/select2.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -35,6 +37,12 @@ function ArticuloTable() {
 
   useEffect(() => {
     const baseUrll = process.env.REACT_APP_API_URL; // Verifica que esté definida correctamente
+
+
+
+    $('#idSelectorTipo').select2();
+    $('#idSelectorMarca').select2();
+
 
     fetch(`${baseUrll}/Inventario/GetConsultarListaArticulos`)
       .then(response => {
@@ -243,6 +251,8 @@ function ArticuloTable() {
                     value={tipoArticulo}
                     onChange={(e) => setTipoArticulo(e.target.value)}
                     label="TIPO ARTICULO"
+                    id='idSelectorTipo'
+
                   >
                     {tiposArticulo.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -257,6 +267,7 @@ function ArticuloTable() {
                     value={tipoMarca}
                     onChange={(e) => setTipoMarca(e.target.value)}
                     label="TIPO MARCA"
+                    id='idSelectorMarca'
                   >
                     {tiposMarca.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -264,6 +275,7 @@ function ArticuloTable() {
                       </MenuItem>
                     ))}
                   </Select>
+                  
                 </FormControl>
                 <input
                   type="file"

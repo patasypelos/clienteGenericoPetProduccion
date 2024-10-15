@@ -49,6 +49,9 @@ function Billing() {
   useEffect(() => {
    
     $('#purinaSelect').select2();
+    $('#articuloSelect').select2();
+    $('#bañoSelect').select2();
+    $('#mascotaSelect').select2();
 
     fetch(`${baseUrl}/VentasController/GetConsultarListaPurinas`)
       .then(response => response.json())
@@ -194,6 +197,7 @@ function Billing() {
                 ))}
               </select>
               <br />
+              <br />
               <select
                 id="articuloSelect"
                 className="form-select"
@@ -209,6 +213,7 @@ function Billing() {
                 ))}
               </select>
               <br />
+              <br />
               <select
                 id="bañoSelect"
                 className="form-select"
@@ -223,6 +228,7 @@ function Billing() {
                   </option>
                 ))}
               </select>
+              <br />
               <br />
               <SoftBox mb={2}>
                 <SoftInput
