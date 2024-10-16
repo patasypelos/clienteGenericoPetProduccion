@@ -183,7 +183,6 @@ function Billing() {
             <SoftBox>
               <SoftTypography variant="h6">Registrar Artículo</SoftTypography>
               <select
-                id="purinaSelect"
                 className="form-select"
                 name="tipoPurina"
                 value={formData.tipoPurina}
@@ -199,7 +198,6 @@ function Billing() {
               <br />
               <br />
               <select
-                id="articuloSelect"
                 className="form-select"
                 name="tipoArticulo"
                 value={formData.tipoArticulo}
@@ -215,7 +213,6 @@ function Billing() {
               <br />
               <br />
               <select
-                id="bañoSelect"
                 className="form-select"
                 name="tipoBanio"
                 value={formData.tipoBanio}
@@ -239,7 +236,6 @@ function Billing() {
                 />
               </SoftBox>
               <select
-                id="mascotaSelect"
                 className="form-select"
                 name="mascota"
                 value={formData.mascota}

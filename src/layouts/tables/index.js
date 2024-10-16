@@ -9,6 +9,8 @@ import $ from 'jquery';
 import 'select2';
 import 'select2/dist/css/select2.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SoftInput from "components/SoftInput";
+
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -91,6 +93,8 @@ function ArticuloTable() {
 
 
     const handleCreate = () => {
+
+      
       // Usar FormData para enviar imagen y datos del artículo
       const formData = new FormData();
       formData.append('Precio', precio);
@@ -106,13 +110,15 @@ function ArticuloTable() {
         body: formData, // Enviar como FormData
       })
       .then(response => {
+        debugger;
+        
               if (!response.ok) {
                 throw new Error('Error adding new article');
               }
               // After successful POST request, update the table
               return fetch(`${baseUrl}/Inventario/GetConsultarListaArticulos`);
             })
-        .then(response => response.json())
+       
         .then(updatedData => {
 
           setData(updatedData);
@@ -133,43 +139,6 @@ function ArticuloTable() {
 
 
 
-
-  //   const newArticulo = {
-      
-  //     TipoArticulo: tipoArticulo,
-  //     TipoMarca: tipoMarca,
-  //     Cantidad: cantidadDisponible,
-  //     Precio: precio
-  //   };
-
-  //   fetch(`${baseUrl}/Inventario/PostAgregarArticuloInventario`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(newArticulo),
-  //   })
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error('Error adding new article');
-  //       }
-  //       // After successful POST request, update the table
-  //       return fetch(`${baseUrl}/Inventario/GetConsultarListaArticulos`);
-  //     })
-  //     .then(response => response.json())
-  //     .then(updatedData => {
-
-  //       setData(updatedData);
-  //       setPrecio('');
-  //       setCantidadDisponible('');
-  //       setTipoArticulo('');
-  //       setTipoMarca('');
-  //     })
-  //     .catch(error => {
-
-  //       setError('Error adding new article');
-  //     });
-  // };
 
   const handleEditClick = (idArticulo) => {
     fetch(`${baseUrl}/Inventario/GetConsultarArticuloPorId?idArticulo=${idArticulo}`)
@@ -231,59 +200,65 @@ function ArticuloTable() {
                 Crear Nuevo Artículo
               </SoftTypography>
               <SoftBox display="flex" flexWrap="wrap" mt={3}>
-                <TextField
-                  label="Precio"
-                  variant="outlined"
-                  value={precio}
-                  onChange={(e) => setPrecio(e.target.value)}
-                  style={{ marginRight: '10px', marginBottom: '10px' }}
-                />
-                <TextField
-                  label="CANTIDAD DISPONIBLE"
-                  variant="outlined"
-                  value={cantidadDisponible}
-                  onChange={(e) => setCantidadDisponible(e.target.value)}
-                  style={{ marginRight: '10px', marginBottom: '10px' }}
-                />
-                <FormControl variant="outlined" style={{ marginRight: '10px', marginBottom: '10px', width: '150px' }}>
-                  <InputLabel>TIPO ARTICULO</InputLabel>
-                  <Select
-                    value={tipoArticulo}
-                    onChange={(e) => setTipoArticulo(e.target.value)}
-                    label="TIPO ARTICULO"
-                    id='idSelectorTipo'
-
-                  >
-                    {tiposArticulo.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl variant="outlined" style={{ marginRight: '10px', marginBottom: '10px', width: '150px' }}>
-                  <InputLabel>TIPO MARCA</InputLabel>
-                  <Select
-                    value={tipoMarca}
-                    onChange={(e) => setTipoMarca(e.target.value)}
-                    label="TIPO MARCA"
-                    id='idSelectorMarca'
-                  >
-                    {tiposMarca.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  
-                </FormControl>
+           
+                  <SoftBox mb={2}>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  style={{ marginBottom: '10px' }}
+                  placeholder="PRECIO"
+                  name="precioArti"
+                  value={precio}
+                  className='form-control'
+
+                  onChange={(e) => setPrecio(e.target.value)}
                 />
-                <Button variant="contained" 
+              </SoftBox>
+            
+
+              <SoftBox mb={2}>
+                <input
+                  placeholder="CANTIDAD DISPONIBLE"
+                  name="cantidaDisponible"
+                  value={cantidadDisponible}
+                  className='form-control'
+
+                  onChange={(e) => setCantidadDisponible(e.target.value)}
+                />
+              </SoftBox>
+              <SoftBox mb={2}>
+              <select
+  value={tipoArticulo}
+  onChange={(e) => {
+    setTipoArticulo(e.target.value);
+    console.log('Tipo Artículo seleccionado:', e.target.value);
+  }}
+  className='form-control'
+>
+  <option value="">Seleccione un tipo</option>
+  {tiposArticulo.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.text}
+    </option>
+  ))}
+</select>
+
+                  </SoftBox>
+                  <SoftBox mb={2}>
+                  <select
+  value={tipoMarca}
+  onChange={(e) => {
+    setTipoMarca(e.target.value);
+    console.log('Tipo Marca seleccionada:', e.target.value);
+  }}
+  className='form-control'
+>
+  <option value="">Seleccione una marca</option>
+  {tiposMarca.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.text}
+    </option>
+  ))}
+</select>
+                  </SoftBox>
+                  <Button variant="contained" 
                   sx={{
                     backgroundColor: '#003366', // Azul oscuro por defecto
                     color: '#ffffff', // Letras blancas por defecto
@@ -297,6 +272,13 @@ function ArticuloTable() {
                  onClick={handleCreate} >
                   Crear
                 </Button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ marginBottom: '10px' }}
+                />
+              
               </SoftBox>
             </Grid>
           </Grid>
