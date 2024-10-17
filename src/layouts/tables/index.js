@@ -112,13 +112,19 @@ function ArticuloTable() {
       .then(response => {
         debugger;
         
-              if (!response.ok) {
-                throw new Error('Error adding new article');
+              if (response.status === 204) {
+                setError('La marca ya se en cuentra registrada.');
+                return fetch(`${baseUrl}/Inventario/GetConsultarListaArticulos`);
+              }
+              else{
+                setError('');
+
               }
               // After successful POST request, update the table
               return fetch(`${baseUrl}/Inventario/GetConsultarListaArticulos`);
             })
-       
+            .then(response => response.json())
+
         .then(updatedData => {
 
           setData(updatedData);
@@ -166,8 +172,8 @@ function ArticuloTable() {
       body: JSON.stringify(selectedArticulo),
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Error updating article');
+        if (response.status === 204) {
+          setError('Error updating article');
         }
         setShowModal(false);
         return fetch(`${baseUrl}/Inventario/GetConsultarListaArticulos`);
@@ -280,6 +286,11 @@ function ArticuloTable() {
                 />
               
               </SoftBox>
+              {error && (
+                <div style={{ color: 'red', marginTop: '10px' }}>
+                    {error}
+                </div>
+            )}
             </Grid>
           </Grid>
         </SoftBox>
