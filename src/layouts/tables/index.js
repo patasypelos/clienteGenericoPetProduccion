@@ -93,11 +93,12 @@ function ArticuloTable() {
 
 
     const handleCreate = () => {
+      const formattedPrecio = parseInt(precio, 10); // Ensure precio is saved as an integer
 
       
       // Usar FormData para enviar imagen y datos del artículo
       const formData = new FormData();
-      formData.append('Precio', precio);
+      formData.append('Precio', formattedPrecio);
       formData.append('Cantidad', cantidadDisponible);
       formData.append('TipoArticulo', tipoArticulo);
       formData.append('TipoMarca', tipoMarca);
@@ -209,6 +210,7 @@ function ArticuloTable() {
            
                   <SoftBox mb={2}>
                 <input
+                type="number"
                   placeholder="PRECIO"
                   name="precioArti"
                   value={precio}
