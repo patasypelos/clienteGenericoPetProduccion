@@ -143,10 +143,6 @@ function ArticuloTable() {
     };
 
 
-
-
-
-
   const handleEditClick = (idArticulo) => {
     fetch(`${baseUrl}/Inventario/GetConsultarArticuloPorId?idArticulo=${idArticulo}`)
       .then(response => {
