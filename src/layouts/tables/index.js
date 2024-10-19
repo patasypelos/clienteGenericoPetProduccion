@@ -20,7 +20,7 @@ function ArticuloTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Estados para los campos de entrada
+  // Estados jampi
   const [precio, setPrecio] = useState('');
   const [cantidadDisponible, setCantidadDisponible] = useState('');
   const [tipoArticulo, setTipoArticulo] = useState('');
