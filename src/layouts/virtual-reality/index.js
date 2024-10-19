@@ -18,34 +18,42 @@ function ReporteVentas() {
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [articuloSeleccionado, setArticuloSeleccionado] = useState('');
-
-  const [tiposArticulo, setTiposArticulo] = useState([]);
+  const [totalPrecioPurina, setTotalPrecioPurina] = useState(0);
+  const [totalPrecioAccesorio, setTotalPrecioAccesorio] = useState(0);
+    const [tiposArticulo, setTiposArticulo] = useState([]);
 
   useEffect(() => {
     // Cargar la lista de tipos de artículo
-    fetch(`${baseUrl}/Inventario/GetConsultarListaTipoArticulo`)
+    fetch(`${baseUrl}/Inventario/GetConsultarListaTipoMarca`)
       .then(response => response.json())
       .then(data => setTiposArticulo(data))
       .catch(error => setError('Error fetching tipos de artículo'));
   }, []);
 
   const handleFilter = () => {
-    let url = `${baseUrl}/Ventas/GetReporteVentas?`;
+    debugger;
+    let url = `${baseUrl}/VentasController/GetConsultarVentas?fechaInici=${fechaInicio}&fechaFin=${fechaFin}&idArticulo=${articuloSeleccionado}`;
     
-    if (fechaInicio) {
-      url += `fechaInicio=${fechaInicio}&`;
-    }
-    if (fechaFin) {
-      url += `fechaFin=${fechaFin}&`;
-    }
-    if (articuloSeleccionado) {
-      url += `idArticulo=${articuloSeleccionado}`;
-    }
+
 
     fetch(url)
-      .then(response => response.json())
-      .then(data => setData(data))
-      .catch(error => setError('Error fetching sales report'));
+    .then(response => response.json())
+    .then(data => {
+      setData(data);
+
+          // Calculate total price for PURINA and ACCESORIO separately
+          const totalPurina = data
+          .filter(venta => venta.nombreTipoArticulo === 'PURINA')
+          .reduce((total, venta) => total + venta.precio, 0);
+
+        const totalAccesorio = data
+          .filter(venta => venta.nombreTipoArticulo === 'ACCESORIO')
+          .reduce((total, venta) => total + venta.precio, 0);
+
+        setTotalPrecioPurina(totalPurina);
+        setTotalPrecioAccesorio(totalAccesorio);
+    })
+    .catch(error => setError('Error fetching sales report'));
   };
 
   return (
@@ -60,39 +68,45 @@ function ReporteVentas() {
         <SoftBox mb={3}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
-              <TextField
-                label="Fecha Inicio"
+           
+                 <input
+                 label="Fecha Inicio"
                 type="date"
-                variant="outlined"
-                value={fechaInicio}
-                onChange={(e) => setFechaInicio(e.target.value)}
-                fullWidth
-              />
+                  placeholder="PRECIO"
+                  name="precioArti"
+                  value={fechaInicio}
+                  className='form-control'
+
+                  onChange={(e) => setFechaInicio(e.target.value)}
+                  />
             </Grid>
             <Grid item xs={12} md={4}>
-              <TextField
-                label="Fecha Fin"
-                type="date"
-                variant="outlined"
-                value={fechaFin}
-                onChange={(e) => setFechaFin(e.target.value)}
-                fullWidth
-              />
+            
+                  <input
+                  label="Fecha Inicio"
+                  type="date"
+                  className='form-control'
+                  value={fechaFin}
+                  onChange={(e) => setFechaFin(e.target.value)}
+                  />
             </Grid>
             <Grid item xs={12} md={4}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>Artículo</InputLabel>
-                <Select
-                  value={articuloSeleccionado}
-                  onChange={(e) => setArticuloSeleccionado(e.target.value)}
-                  label="Artículo"
-                >
-                  {tiposArticulo.map((articulo) => (
-                    <MenuItem key={articulo.idArticulo} value={articulo.idArticulo}>
-                      {articulo.nombreArticulo}
-                    </MenuItem>
-                  ))}
-                </Select>
+              
+
+
+                <select
+  value={articuloSeleccionado}
+  onChange={(e) => setArticuloSeleccionado(e.target.value)}
+  className='form-control'
+>
+  <option value="">Seleccione un tipo</option>
+  {tiposArticulo.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.text}
+    </option>
+  ))}
+</select>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
@@ -102,7 +116,13 @@ function ReporteVentas() {
             </Grid>
           </Grid>
         </SoftBox>
-
+       {/* Totals */}
+       <SoftTypography  item xs={12} md={4}>
+          Total PURINA: {totalPrecioPurina.toFixed(0)}
+        </SoftTypography>
+        <SoftTypography  item xs={12} md={4}>
+          Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}
+        </SoftTypography>
         {/* Tabla de Reporte de Ventas */}
         <SoftBox>
           <Grid container spacing={3}>
@@ -111,23 +131,23 @@ function ReporteVentas() {
                 <table className="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>Fecha</th>
-                      <th>Artículo</th>
-                      <th>Cantidad Vendida</th>
-                      <th>Precio Unitario</th>
-                      <th>Total</th>
+                      <th>Número</th>
+                      <th>Tipo articulo</th>
+                      <th>Nombre</th>
+                      <th>Precio venta</th>
+                      <th>Fecha registra</th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.length > 0 ? (
                       data.map((venta, index) => (
                         <tr key={index}>
-                          <td>{venta.fecha}</td>
+                          <td>{venta.idIngresaVenta}</td>
+                          <td>{venta.nombreTipoArticulo}</td>
                           <td>{venta.nombreArticulo}</td>
-                          <td>{venta.cantidadVendida}</td>
-                          <td>{venta.precioUnitario}</td>
-                          <td>{venta.total}</td>
-                        </tr>
+                          <td>{venta.precio}</td>
+                          <td>{new Date(venta.fechaCreacion).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                          </tr>
                       ))
                     ) : (
                       <tr>
