@@ -116,15 +116,14 @@ function ReporteVentas() {
             </Grid>
           </Grid>
         </SoftBox>
-       {/* Totals */}
-       <SoftTypography  item xs={12} md={4}>
-          Total PURINA: {totalPrecioPurina.toFixed(0)}
-        </SoftTypography>
-        <SoftTypography  item xs={12} md={4}>
-          Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}
-        </SoftTypography>
-        {/* Tabla de Reporte de Ventas */}
+      
         <SoftBox>
+        <Grid  item xs={12} md={4}>
+          Total PURINA: {totalPrecioPurina.toFixed(0)}
+        </Grid>
+        <Grid  item xs={12} md={4}>
+          Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}
+        </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <div className='table-responsive'>
