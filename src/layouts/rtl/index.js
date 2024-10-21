@@ -34,6 +34,8 @@ const MascotaForm = () => {
       .then((response) => response.json())
       .then((data) => setTipoRaza(data))
       .catch((error) => console.error('Error al obtener las razas:', error));
+
+      
   }, [baseUrll]);
 
  
@@ -330,7 +332,7 @@ const MascotaForm = () => {
             {mascotasRegistradas.map((mascota) => (
             <tr key={mascota.id}>
               <td> <img
-              src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/DocumentoAdjuntoAnimal/${mascota.archivo}`} // Concatenamos la URL base de la API
+              src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/Documentosmascotas/${mascota.archivo}`} // Concatenamos la URL base de la API
              
               style={{ width: "80px", height: "auto" }}
             /></td>
@@ -340,8 +342,21 @@ const MascotaForm = () => {
               <td>{mascota.genero}</td>
               <td>{mascota.edad}</td>
               <td>
-                <button onClick={() => handleEdit(mascota.id)}>Editar</button>
-              </td>
+                            <Button variant="contained"  
+                            sx={{
+                              backgroundColor: '#ffffff', // Fondo blanco por defecto
+                              color: '#003366', // Letras azules por defecto
+                              border: '2px solid #003366', // Borde azul por defecto
+                              '&:hover': {
+                                backgroundColor: '#003366', // Fondo azul oscuro al pasar el cursor
+                                color: '#ffffff', // Letras blancas al pasar el cursor
+                                border: '2px solid #003366' // Borde azul al pasar el cursor
+                              }
+                            }}
+                 onClic onClick={() => handleEditClick(item.idArticulo)}>
+                              Editar
+                            </Button>
+                          </td>
             </tr>
           ))}
         </tbody>
