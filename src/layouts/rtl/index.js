@@ -10,25 +10,23 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
 const MascotaForm = () => {
   const baseUrll = process.env.REACT_APP_API_URL;
+  const [NombreVal, setNombreVal] = useState('');
+  const [TelefonoVal, setTelefonoVal] = useState('');
+  const [telefonodosVal, settelefonodosVal] = useState('');
+  const [nombrePropietarioVal, setnombrePropietarioVal] = useState('');
+  const [nombrePropietarioDosVsal, setnombrePropietarioDosVsal] = useState('');
+  const [generoVal, setgeneroVal] = useState('');
+  const [edadVal, setedadVal] = useState('');
+  const [precioBanoVal, setprecioBanoVal] = useState('');
+  const [idTipoRazaVal, setidTipoRazaVal] = useState('');
+  const [observacionVal, setobservacionVal] = useState('');
 
-  const [mascota, setMascota] = useState({
-    nombre: '',
-    Telefono: '',
-    telefonoDos: '',
-    nombrePropietario: '',
-    nombrePropietarioDos: '',
-    genero: '',
-    edad: '',
-    precioBano: '',
-    idTipoRaza: '',
-    observacion: '',
-    imagen: null,
-  });
 
   const [tipoRaza, setTipoRaza] = useState([]);
   const [mascotasRegistradas, setMascotasRegistradas] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [mascotaId, setMascotaId] = useState(null);
+  const [imagen, setImagen] = useState(null); // Nuevo estado para la imagen
 
   // Obtener lista de tipos de raza
   useEffect(() => {
@@ -37,6 +35,8 @@ const MascotaForm = () => {
       .then((data) => setTipoRaza(data))
       .catch((error) => console.error('Error al obtener las razas:', error));
   }, [baseUrll]);
+
+ 
 
   // Obtener lista de mascotas registradas
   const fetchMascotasRegistradas = () => {
@@ -50,55 +50,43 @@ const MascotaForm = () => {
     fetchMascotasRegistradas();
   }, [baseUrll]);
 
-  // Manejar cambios en el formulario
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMascota((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
-  // Manejar carga de imagen
-  const handleImageChange = (e) => {
-    setMascota((prevState) => ({
-      ...prevState,
-      imagen: e.target.files[0],
-    }));
-  };
+
+
 
   // Manejar registro de nueva mascota
   const handleSubmit = (e) => {
     e.preventDefault();
+  
     const formData = new FormData();
-    for (const key in mascota) {
-      formData.append(key, mascota[key]);
+    formData.append('IdAnimalInventario', 0);
+    formData.append('Nombre', NombreVal);
+    formData.append('Telefono', TelefonoVal);
+    formData.append('TelefonoDos', telefonodosVal);
+    formData.append('NombrePropietario', nombrePropietarioVal);
+    formData.append('NombrePropietarioDos', nombrePropietarioDosVsal);
+    formData.append('Genero', generoVal);
+    formData.append('Edad', edadVal);
+    formData.append('PrecioBano', precioBanoVal);
+    formData.append('IdTipoRazaInventario', idTipoRazaVal);
+    formData.append('Observacion', observacionVal);
+    if (imagen) {
+      formData.append('imagen', imagen); // Añadir la imagen si está seleccionada
     }
-
     fetch(`${baseUrll}/RegistrarUsuariosMascotas/PostregistrarMascota`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+      body: formData,
     })
       .then(() => {
+
         fetchMascotasRegistradas();
-        setMascota({
-          nombre: '',
-          telefono: '',
-          telefonoDos: '',
-          nombrePropietario: '',
-          nombrePropietarioDos: '',
-          genero: '',
-          edad: '',
-          precioBano: '',
-          idTipoRaza: '',
-          observacion: '',
-          imagen: null,
-        });
+       
       })
       .catch((error) => console.error('Error al registrar la mascota:', error));
+  };
+
+  const handleFileChangeMascota = (e) => {
+    setImagen(e.target.files[0]); // Guardar el archivo seleccionado
   };
 
   // Manejar edición de mascota
@@ -146,134 +134,181 @@ const MascotaForm = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-    <SoftBox p={2}>
+    <SoftBox p={1}>
       <SoftTypography variant="h4" gutterBottom>
         {editMode ? 'Editar Mascota' : 'Registrar Mascota'}
       </SoftTypography>
       <Box component="form" onSubmit={editMode ? handleUpdate : handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Nombre"
-              name="nombre"
-              value={mascota.nombre}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Teléfono"
-              name="telefono"
-              value={mascota.telefono}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Teléfono Secundario"
-              name="telefonoDos"
-              value={mascota.telefonoDos}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Nombre del Propietario"
-              name="nombrePropietario"
-              value={mascota.nombrePropietario}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Nombre Secundario del Propietario"
-              name="nombrePropietarioDos"
-              value={mascota.nombrePropietarioDos}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Género"
-              name="genero"
-              value={mascota.genero}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Edad"
-              type="number"
-              name="edad"
-              value={mascota.edad}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              label="Precio del Baño"
-              type="number"
-              name="precioBano"
-              value={mascota.precioBano}
-              onChange={handleChange}
-              required
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth>
-              <InputLabel id="tipoRaza-label">Raza</InputLabel>
-              <Select
-                labelId="tipoRaza-label"
-                name="idTipoRaza"
-                value={mascota.idTipoRaza}
-                onChange={handleChange}
-                required
-              >
-                <MenuItem value="">
-                  <em>Seleccionar Raza</em>
-                </MenuItem>
-                {tipoRaza.map((raza) => (
-                  <MenuItem key={raza.value} value={raza.value}>
-                    {raza.text}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Observación"
-              name="observacion"
-              value={mascota.observacion}
-              onChange={handleChange}
-              multiline
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" component="label">
-              Subir Imagen
-              <input type="file" hidden onChange={handleImageChange} />
-            </Button>
-          </Grid>
-        </Grid>
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-          {editMode ? 'Actualizar Mascota' : 'Registrar Mascota'}
-        </Button>
-      </Box>
+  <Grid container spacing={2}>
+    {/* Nombre */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Nombre"
+          name="nombre"
+          value={NombreVal}
+          className="form-control"
+          onChange={(e) => setNombreVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Telefono */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Telefono"
+          name="telefono"
+          value={TelefonoVal}
+          className="form-control"
+          onChange={(e) => setTelefonoVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Telefono dos */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Telefono dos"
+          name="telefonoDos"
+          value={telefonodosVal}
+          className="form-control"
+          onChange={(e) => settelefonodosVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Nombre Propietario */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Nombre propietario"
+          name="nombrePropietario"
+          value={nombrePropietarioVal}
+          className="form-control"
+          onChange={(e) => setnombrePropietarioVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Nombre Propietario Dos */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Nombre propietario dos"
+          name="nombrePropietarioDos"
+          value={nombrePropietarioDosVsal}
+          className="form-control"
+          onChange={(e) => setnombrePropietarioDosVsal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Genero */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Género"
+          name="genero"
+          value={generoVal}
+          className="form-control"
+          onChange={(e) => setgeneroVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Edad mascota */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Edad mascota"
+          name="edad"
+          value={edadVal}
+          className="form-control"
+          onChange={(e) => setedadVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Precio baño */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          type="number"
+          placeholder="Precio baño"
+          name="precioBano"
+          value={precioBanoVal}
+          className="form-control"
+          onChange={(e) => setprecioBanoVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Tipo Raza */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <select
+          value={idTipoRazaVal}
+          onChange={(e) => setidTipoRazaVal(e.target.value)}
+          className="form-control"
+        >
+          <option value="">Seleccione un raza</option>
+          {tipoRaza.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.text}
+            </option>
+          ))}
+        </select>
+      </SoftBox>
+    </Grid>
+    
+    {/* Observación */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          placeholder="Observación"
+          name="observacion"
+          value={observacionVal}
+          className="form-control"
+          onChange={(e) => setobservacionVal(e.target.value)}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Imagen */}
+    <Grid item xs={12} md={4}>
+      <SoftBox>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChangeMascota}
+          style={{ marginBottom: '10px' }}
+        />
+      </SoftBox>
+    </Grid>
+    
+    {/* Botón Crear */}
+    <Grid item xs={12} md={12}>
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#003366',
+          color: '#ffffff',
+          border: '2px solid transparent',
+          '&:hover': {
+            backgroundColor: '#ffffff',
+            color: '#003366',
+            border: '2px solid #003366',
+          },
+        }}
+        onClick={handleSubmit}
+      >
+        Crear
+      </Button>
+    </Grid>
+  </Grid>
+</Box>
 
       <SoftTypography variant="h4" gutterBottom sx={{ mt: 4 }}>
         Mascotas Registradas
@@ -282,6 +317,7 @@ const MascotaForm = () => {
         <table className="table">
           <thead>
             <tr>
+              <th>Foto</th>
               <th>Nombre</th>
               <th>Propietario</th>
               <th>Teléfono</th>
@@ -293,6 +329,11 @@ const MascotaForm = () => {
           <tbody>
             {mascotasRegistradas.map((mascota) => (
             <tr key={mascota.id}>
+              <td> <img
+              src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/DocumentoAdjuntoAnimal/${mascota.archivo}`} // Concatenamos la URL base de la API
+             
+              style={{ width: "80px", height: "auto" }}
+            /></td>
               <td>{mascota.nombre}</td>
               <td>{mascota.nombrePropietario}</td>
               <td>{mascota.telefono}</td>
