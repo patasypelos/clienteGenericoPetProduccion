@@ -116,19 +116,7 @@ const MascotaForm = () => {
         fetchMascotasRegistradas();
         setEditMode(false);
         setMascotaId(null);
-        setMascota({
-          nombre: '',
-          telefono: '',
-          telefonoDos: '',
-          nombrePropietario: '',
-          nombrePropietarioDos: '',
-          genero: '',
-          edad: '',
-          precioBano: '',
-          idTipoRaza: '',
-          observacion: '',
-          imagen: null,
-        });
+        setTelefonoVal{""};
       })
       .catch((error) => console.error('Error al actualizar la mascota:', error));
   };
