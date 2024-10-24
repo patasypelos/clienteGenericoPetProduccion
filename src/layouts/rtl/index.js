@@ -20,6 +20,10 @@ const MascotaForm = () => {
   const [precioBanoVal, setprecioBanoVal] = useState('');
   const [idTipoRazaVal, setidTipoRazaVal] = useState('');
   const [observacionVal, setobservacionVal] = useState('');
+  const [seleccionarMascota, setseleccionarMascota] = useState(null);
+
+  
+  const [showModal, setShowModal] = useState(false);
 
 
   const [tipoRaza, setTipoRaza] = useState([]);
@@ -93,11 +97,11 @@ const MascotaForm = () => {
 
   // Manejar edición de mascota
   const handleEdit = (id) => {
-    fetch(`${baseUrll}/RegistrarUsuariosMascotas/GetConsultarMascotaPorId/${id}`)
+    fetch(`${baseUrll}/RegistrarUsuariosMascotas/GetConsultarMascotaRegistradasID?idMascota=${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setMascota(data);
-        setEditMode(true);
+        setseleccionarMascota(data);
+        setShowModal(true);
         setMascotaId(id);
       })
       .catch((error) => console.error('Error al obtener detalles de la mascota:', error));
@@ -110,15 +114,25 @@ const MascotaForm = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(mascota),
+      body: JSON.stringify(seleccionarMascota),
     })
       .then(() => {
         fetchMascotasRegistradas();
         setEditMode(false);
         setMascotaId(null);
-        setTelefonoVal{""};
       })
       .catch((error) => console.error('Error al actualizar la mascota:', error));
+  };
+
+
+
+
+  const handleChangeSS = (e) => {
+    const { name, value } = e.target;
+    setseleccionarMascota((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -341,7 +355,7 @@ const MascotaForm = () => {
                                 border: '2px solid #003366' // Borde azul al pasar el cursor
                               }
                             }}
-                 onClic onClick={() => handleEditClick(item.idArticulo)}>
+                 onClic onClick={() => handleEdit(mascota.idAnimalInventario)}>
                               Editar
                             </Button>
                           </td>
@@ -352,8 +366,149 @@ const MascotaForm = () => {
       </Box>
 
       </SoftBox>
+      
+      {seleccionarMascota && (
+  <Modal open={showModal} onClose={() => setShowModal(false)}>
+    <Box sx={{ ...modalStyle }}>
+      <Typography variant="h6" component="h2">
+        Editar mascota
+      </Typography>
+
+      {/* Contenedor con grid de 12 columnas */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 2 }}>
+        {/* Cada campo ocupará 4 espacios (o columnas) */}
+        <TextField
+          label="Nombre"
+          name="precio"
+          value={seleccionarMascota.nombre || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="telefono"
+          variant="outlined"
+          name="cantidadDisponible"
+          value={seleccionarMascota.telefono || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Telefono dos"
+          variant="outlined"
+          name="cantidadDisponible"
+          value={seleccionarMascota.telefonoDos || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Nombre propietario"
+          variant="outlined"
+          name="tipoArrt"
+          value={seleccionarMascota.nombrePropietario || ''}
+          onChange={handleChangeSS}
+
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Nombre propietario dos"
+          variant="outlined"
+          name="tipoMar"
+          value={seleccionarMascota.nombrePropietarioDos || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Genero"
+          variant="outlined"
+          name="tipoMar"
+          value={seleccionarMascota.genero || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Edad"
+          variant="outlined"
+          name="tipoMar"
+          value={seleccionarMascota.edad || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Precio baño"
+          variant="outlined"
+          name="tipoMar"
+          value={seleccionarMascota.precioBano || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 4' }} // Ocupar 4 espacios
+        />
+        <TextField
+          label="Observación"
+          variant="outlined"
+          name="tipoMar"
+          value={seleccionarMascota.observacion || ''}
+          onChange={handleChangeSS}
+          fullWidth
+          margin="normal"
+          sx={{ gridColumn: 'span 12' }} // Ocupar todo el ancho
+        />
+      </Box>
+
+      {/* Imagen */}
+      <img
+        src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/Documentosmascotas/${seleccionarMascota.archivo}`}
+        style={{ width: '80px', height: 'auto', marginTop: '16px' }}
+        alt="Imagen de la mascota"
+      />
+
+      {/* Botón Guardar */}
+      <Button
+        variant="contained"
+        sx={{
+          backgroundColor: '#ffffff',
+          color: '#003366',
+          border: '2px solid #003366',
+          '&:hover': {
+            backgroundColor: '#003366',
+            color: '#ffffff',
+            border: '2px solid #003366',
+          },
+          marginTop: '16px',
+        }}
+        onClick={handleUpdate}
+      >
+        Guardar
+      </Button>
+    </Box>
+  </Modal>
+)}
        </DashboardLayout>
     );
 };
-
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,  // Aumenta el ancho para que quepan tres campos
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 export default MascotaForm;
