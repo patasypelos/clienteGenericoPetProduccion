@@ -110,7 +110,18 @@ function ReporteVentas() {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={handleFilter}>
+              <Button
+                sx={{
+                  backgroundColor: '#ffffff', // Fondo blanco por defecto
+                  color: '#003366', // Letras azules por defecto
+                  border: '2px solid #003366', // Borde azul por defecto
+                  '&:hover': {
+                    backgroundColor: '#003366', // Fondo azul oscuro al pasar el cursor
+                    color: '#ffffff', // Letras blancas al pasar el cursor
+                    border: '2px solid #003366' // Borde azul al pasar el cursor
+                  }
+                }}
+              variant="contained" onClick={handleFilter}>
                 Filtrar
               </Button>
             </Grid>

@@ -18,6 +18,7 @@ const MascotaForm = () => {
   const [precioBanoVal, setprecioBanoVal] = useState('');
   const [idTipoRazaVal, setidTipoRazaVal] = useState('');
   const [observacionVal, setobservacionVal] = useState('');
+  const [eoorro, setError] = useState('');
   const [listarazas, setlistarazas] = useState([]);
 
   const [imagen, setImagen] = useState(null);
@@ -108,32 +109,34 @@ const MascotaForm = () => {
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('IdAnimalInventario', mascotaId);
-    formData.append('Nombre', NombreVal);
-    formData.append('Telefono', TelefonoVal);
-    formData.append('TelefonoDos', telefonodosVal);
-    formData.append('NombrePropietario', nombrePropietarioVal);
-    formData.append('NombrePropietarioDos', nombrePropietarioDosVal);
-    formData.append('Genero', generoVal);
-    formData.append('Edad', edadVal);
-    formData.append('PrecioBano', precioBanoVal);
-    formData.append('IdTipoRazaInventario', idTipoRazaVal);
-    formData.append('Observacion', observacionVal);
+    const formDataUpdate = new FormData();
+    formDataUpdate.append('IdAnimalInventario', mascotaId);
+    formDataUpdate.append('Nombre', NombreVal);
+    formDataUpdate.append('Telefono', TelefonoVal);
+    formDataUpdate.append('TelefonoDos', telefonodosVal);
+    formDataUpdate.append('NombrePropietario', nombrePropietarioVal);
+    formDataUpdate.append('NombrePropietarioDos', nombrePropietarioDosVal);
+    formDataUpdate.append('Genero', generoVal);
+    formDataUpdate.append('Edad', edadVal);
+    formDataUpdate.append('PrecioBano', precioBanoVal);
+    formDataUpdate.append('IdTipoRazaInventario', idTipoRazaVal);
+    formDataUpdate.append('Observacion', observacionVal);
     if (imagen) {
-      formData.append('imagen', imagen);
+      formDataUpdate.append('imagen', imagen);
     }
+debugger;
+   
 
-    fetch(`${baseUrll}/RegistrarUsuariosMascotas/ActualizarMascota/${mascotaId}`, {
-      method: 'PUT',
-      body: formData,
+  fetch(`${baseUrll}/RegistrarUsuariosMascotas/ActualizarMascotaAsync`, {
+    method: 'POST',
+    body: formDataUpdate,
+  })
+    .then(() => {
+      fetchMascotasRegistradas();
+      resetForm();
     })
-      .then(() => {
-        fetchMascotasRegistradas();
-        resetForm();
-      })
-      .catch((error) => console.error('Error al actualizar la mascota:', error));
-  };
+    .catch((error) => console.error('Error al registrar la mascota:', error));
+};
 
  
   // Resetear el formulario
@@ -301,7 +304,18 @@ const MascotaForm = () => {
             </Grid>
             <Grid item xs={12}>
               <SoftBox>
-                <Button type="submit" variant="contained" color="primary">
+                <Button
+                sx={{
+                  backgroundColor: '#003366', // Azul oscuro por defecto
+                  color: '#ffffff', // Letras blancas por defecto
+                  border: '2px solid transparent', // Borde transparente por defecto
+                  '&:hover': {
+                    backgroundColor: '#ffffff', // Fondo blanco al pasar el cursor
+                    color: '#003366', // Letras azules al pasar el cursor
+                    border: '2px solid #003366' // Borde azul al pasar el cursor
+                  }
+                }}
+                type="submit" variant="contained" color="primary">
                   {editMode ? 'Actualizar Mascota' : 'Registrar Mascota'}
                 </Button>
               </SoftBox>
@@ -314,36 +328,66 @@ const MascotaForm = () => {
           <SoftTypography variant="h5" gutterBottom>
             Mascotas Registradas
           </SoftTypography>
-          <table className="table table-striped">
+          <div className="table-responsive">
+
+          <table className="table table-hover">
             <thead>
               <tr>
+              <th>Actualizar</th>
                 <th>Foto</th>
                 <th>Nombre</th>
-                <th>Género</th>
+                <th>Precio baño</th>
+                <th>Telefono</th>
+                <th>Telefono secundario</th>
+                <th>Nombre propietario</th>
+                <th>Nombre propietario secundario</th>
+                <th>Genero</th>
                 <th>Edad</th>
-                <th>Precio del Baño</th>
-                <th>Acciones</th>
+                <th>Raza</th>
+                <th>Observaciones</th>
               </tr>
             </thead>
             <tbody>
               {mascotasRegistradas.map((mascota) => (
                 <tr key={mascota.id}>
+                   <td>
+                    <Button
+                       sx={{
+                        backgroundColor: '#ffffff', // Fondo blanco por defecto
+                        color: '#003366', // Letras azules por defecto
+                        border: '2px solid #003366', // Borde azul por defecto
+                        '&:hover': {
+                          backgroundColor: '#003366', // Fondo azul oscuro al pasar el cursor
+                          color: '#ffffff', // Letras blancas al pasar el cursor
+                          border: '2px solid #003366' // Borde azul al pasar el cursor
+                        }
+                      }}
+                    variant="contained" color="primary" onClick={() => handleEdit(mascota.idAnimalInventario)}>Editar</Button>
+                  </td>
                   <td>  <img
               src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/Documentosmascotas/${mascota.archivo}`} // Concatenamos la URL base de la API
              
               style={{ width: "80px", height: "auto" }}
             /></td>
-                  <td>{mascota.nombre}</td>
+              <td>{mascota.nombre}</td>
+               <td>{mascota.precioBano}</td>
+                
+                  <td>{mascota.telefono}</td>
+                  <td>{mascota.telefonoDos}</td>
+                  <td>{mascota.nombrePropietario}</td>
+                  <td>{mascota.nombrePropietarioDos}</td>
                   <td>{mascota.genero}</td>
                   <td>{mascota.edad}</td>
-                  <td>{mascota.precioBano}</td>
-                  <td>
-                    <Button variant="contained" color="primary" onClick={() => handleEdit(mascota.idAnimalInventario)}>Editar</Button>
-                  </td>
+                  <td>{mascota.idTipoRazaInventario}</td>
+                  <td>{mascota.observacion}</td>
+               
+                 
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
+
         </SoftBox>
       </SoftBox>
     </DashboardLayout>

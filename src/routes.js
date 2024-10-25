@@ -104,7 +104,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "RTL",
+    name: "Registrar mascota",
     key: "rtl",
     route: "/rtl",
     icon: <Settings size="12px" />,
