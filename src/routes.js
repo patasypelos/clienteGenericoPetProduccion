@@ -95,7 +95,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Virtual Reality",
+    name: "Reporte ventas",
     key: "virtual-reality",
     route: "/virtual-reality",
     icon: <Cube size="12px" />,
