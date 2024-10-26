@@ -6,6 +6,8 @@ import SoftTypography from 'components/SoftTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 
+import CrearRazaModal from './modales/crearRazaModal';
+
 const MascotaForm = () => {
   const baseUrll = process.env.REACT_APP_API_URL;
   const [NombreVal, setNombreVal] = useState('');
@@ -25,6 +27,20 @@ const MascotaForm = () => {
   const [mascotasRegistradas, setMascotasRegistradas] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [mascotaId, setMascotaId] = useState(null);
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  // Maneja la respuesta después de crear la raza (puedes actualizar una lista, etc.)
+  const handleRazaCreada = (nuevaRaza) => {
+    console.log('Raza creada:', nuevaRaza);
+    fetch(`${baseUrll}/RegistrarUsuariosMascotas/GetConsultarListaTipoRaza`);
+
+    // Aquí podrías actualizar el estado con la nueva raza o hacer alguna acción adicional
+  };
 
   // Obtener lista de mascotas registradas
   const fetchMascotasRegistradas = () => {
@@ -164,6 +180,28 @@ debugger;
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <div>
+      <Button
+       sx={{
+        backgroundColor: '#003366', // Azul oscuro por defecto
+        color: '#ffffff', // Letras blancas por defecto
+        border: '2px solid transparent', // Borde transparente por defecto
+        '&:hover': {
+          backgroundColor: '#ffffff', // Fondo blanco al pasar el cursor
+          color: '#003366', // Letras azules al pasar el cursor
+          border: '2px solid #003366' // Borde azul al pasar el cursor
+        }
+      }}
+      variant="contained" color="primary" onClick={handleOpenModal}>
+        Crear Tipo de Raza
+      </Button>
+
+      <CrearRazaModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onRazaCreada={handleRazaCreada}
+      />
+    </div>
       <SoftBox p={1}>
         <SoftTypography variant="h4" gutterBottom>
           {editMode ? 'Editar Mascota' : 'Registrar Mascota'}
