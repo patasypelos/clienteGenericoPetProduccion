@@ -211,7 +211,7 @@ function ArticuloTable() {
                   name="precioArti"
                   value={precio}
                   className='form-control'
-
+                  required
                   onChange={(e) => setPrecio(e.target.value)}
                 />
               </SoftBox>
@@ -223,13 +223,14 @@ function ArticuloTable() {
                   name="cantidaDisponible"
                   value={cantidadDisponible}
                   className='form-control'
-
+                  required
                   onChange={(e) => setCantidadDisponible(e.target.value)}
                 />
               </SoftBox>
               <SoftBox mb={2}>
               <select
   value={tipoArticulo}
+  required
   onChange={(e) => {
     setTipoArticulo(e.target.value);
     console.log('Tipo Artículo seleccionado:', e.target.value);
@@ -248,6 +249,7 @@ function ArticuloTable() {
                   <SoftBox mb={2}>
                   <select
   value={tipoMarca}
+  required
   onChange={(e) => {
     setTipoMarca(e.target.value);
     console.log('Tipo Marca seleccionada:', e.target.value);
@@ -281,6 +283,7 @@ function ArticuloTable() {
                   accept="image/*"
                   onChange={handleFileChange}
                   style={{ marginBottom: '10px' }}
+                  required
                 />
               
               </SoftBox>

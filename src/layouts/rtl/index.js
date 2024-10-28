@@ -154,7 +154,7 @@ debugger;
     .catch((error) => console.error('Error al registrar la mascota:', error));
 };
 
- 
+  
   // Resetear el formulario
   const resetForm = () => {
     setNombreVal('');
@@ -216,6 +216,7 @@ debugger;
                   value={NombreVal}
                   onChange={handleInputChange(setNombreVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -226,6 +227,7 @@ debugger;
                   value={TelefonoVal}
                   onChange={handleInputChange(setTelefonoVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -236,6 +238,7 @@ debugger;
                   value={telefonodosVal}
                   onChange={handleInputChange(settelefonodosVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -246,6 +249,7 @@ debugger;
                   value={nombrePropietarioVal}
                   onChange={handleInputChange(setnombrePropietarioVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -267,6 +271,7 @@ debugger;
                   value={generoVal}
                   onChange={handleInputChange(setgeneroVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -278,6 +283,7 @@ debugger;
                   value={edadVal}
                   onChange={handleInputChange(setedadVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -289,6 +295,7 @@ debugger;
                   value={precioBanoVal}
                   onChange={handleInputChange(setprecioBanoVal)}
                   fullWidth
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -300,6 +307,7 @@ debugger;
  value={idTipoRazaVal}
  onChange={handleInputChange(setidTipoRazaVal)}
   className='form-control'
+  required
 >
   <option value="">Seleccione un tipo</option>
   {listarazas.map((option) => (
@@ -319,6 +327,7 @@ debugger;
                   fullWidth
                   multiline
                   rows={4}
+                  required
                 />
               </SoftBox>
             </Grid>
@@ -337,6 +346,7 @@ debugger;
                 <input
                   type="file"
                   onChange={(e) => setImagen(e.target.files[0])}
+                  
                 />
               </SoftBox>
             </Grid>

@@ -22,6 +22,8 @@ import TextField from '@mui/material/TextField';
 import $ from 'jquery';
 import 'select2';
 import 'select2/dist/css/select2.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function Billing() {
   const [formData, setFormData] = useState({
@@ -241,6 +243,7 @@ function Billing() {
                   placeholder="Precio"
                   name="precio"
                   value={formData.precio}
+                  required
                   onChange={handleInputChange}
                 />
               </SoftBox>
