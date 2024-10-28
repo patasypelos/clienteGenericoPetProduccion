@@ -38,6 +38,7 @@ function Billing() {
   const [banios, setBanios] = useState([]);
   const [mascotas, setMascotas] = useState([]);
   const [arfticuloSeleccionado, setArticuloSeleccionado] = useState([]);
+  const [animalSeleccionadoInfo, setanimalSeleccionadoInfo] = useState([]);
   const [purinas, setPurinas] = useState([]);
   const [totalVenta, setTotalVenta] = useState(0);
   const [error, setError] = useState(null);
@@ -94,11 +95,19 @@ function Billing() {
 
   const handleSelectArticulo = (value,name) => {
     
-    if (value != '' && (name === "mascota" || name === "tipoArticulo" || name === "tipoPurina") ) {
+    if (value != '' && (name === "tipoArticulo" || name === "tipoPurina") ) {
       fetch(`${baseUrl}/VentasController/GetConsultarArticuloPorId?idArticulo=${value}`)
         .then(response => response.json())
         .then(data => setArticuloSeleccionado(data))
         .catch(error => setError('Error al consultar la lista de mascotas'));
+        setanimalSeleccionadoInfo([]);
+    }
+    else if (value != '' && (name === "mascota") ) {
+      fetch(`${baseUrl}/RegistrarUsuariosMascotas/GetConsultarMascotaPorId?idmascota=${value}`)
+      .then(response => response.json())
+      .then(data => setanimalSeleccionadoInfo(data))
+      .catch(error => setError('Error al consultar la lista de mascotas'));
+      setArticuloSeleccionado([]);
     }
   };
 
@@ -268,27 +277,60 @@ function Billing() {
       Información general
     </SoftTypography>
     {arfticuloSeleccionado.tipoMarca ? (
-      <SoftBox>
-        <SoftTypography variant="body2">
-          <img
-            src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/DocumentosArticulos/${arfticuloSeleccionado.archivoImagen}`}
-            alt="Imagen del artículo"
-            style={{ width: "320px", height: "210px", objectFit: "cover", borderRadius: "8px" }} // Imagen con borde redondeado
-          />
-        </SoftTypography>
-        <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
-          Nombre: {arfticuloSeleccionado.tipoMarca}
-        </SoftTypography>
-        <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
-          Cantidad disponible: {arfticuloSeleccionado.cantidadDisponible}
-        </SoftTypography>
-        <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
-          Precio: {arfticuloSeleccionado.precio}
-        </SoftTypography>
-      </SoftBox>
-    ) : (
-      <SoftTypography variant="body2">Selecciona una marca</SoftTypography>
-    )}
+  <div className="row">
+    <SoftBox className="col-12 col-md-6">
+      <img
+        src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/DocumentosArticulos/${arfticuloSeleccionado.archivoImagen}`}
+        alt="Imagen del artículo"
+        style={{ width: "100%", height: "310px", objectFit: "cover", borderRadius: "8px" }} // Imagen con borde redondeado y ocupa el ancho completo de la columna
+      />
+    </SoftBox>
+    <SoftBox className="col-12 col-md-6">
+    <br />
+      <br />
+      <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
+        <strong>Nombre:</strong> {arfticuloSeleccionado.tipoMarca}
+      </SoftTypography>
+      <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
+        <strong>Cantidad disponible:</strong> {arfticuloSeleccionado.cantidadDisponible}
+      </SoftTypography>
+      <SoftTypography variant="body2" sx={{ marginTop: "10px" }}>
+        <strong>Precio:</strong> {arfticuloSeleccionado.precio}
+      </SoftTypography>
+    </SoftBox>
+  </div>
+) : (
+  <SoftTypography variant="body2">Selecciona un artículo o una mascota</SoftTypography>
+)}
+  
+  {animalSeleccionadoInfo.nombre ? (
+  <div className="row">
+    <SoftBox className="col-12 col-md-6">
+      <img
+        src={`${process.env.REACT_APP_API_URL_IMG}/Documentos/Documentosmascotas/${animalSeleccionadoInfo.archivoImagen}`}
+        alt="Imagen del artículo"
+        style={{ width: "100%", height: "280px", objectFit: "cover", borderRadius: "8px" }} // Imagen con borde redondeado y ocupa el ancho completo de la columna
+      />
+    </SoftBox>
+    <SoftBox className="col-12 col-md-6">
+      <br />
+      <br />
+      <SoftTypography variant="body2" sx={{ marginTop: "5px" }}>
+        <strong>Nombre:</strong> {animalSeleccionadoInfo.nombre}
+      </SoftTypography>
+      <SoftTypography variant="body2" sx={{ marginTop: "5px" }}>
+        <strong>Nombre propietario:</strong> {animalSeleccionadoInfo.nombrePropietario}
+      </SoftTypography>
+      <SoftTypography variant="body2" sx={{ marginTop: "5px" }}>
+        <strong>Precio:</strong> {animalSeleccionadoInfo.precioBano}
+      </SoftTypography>
+      <SoftTypography variant="body2" sx={{ marginTop: "5px" }}>
+        <strong>Observación:</strong> {animalSeleccionadoInfo.observacion}
+      </SoftTypography>
+    </SoftBox>
+  </div>
+) : ("")}
+    
   </SoftBox>
 </Grid>
         </Grid>
