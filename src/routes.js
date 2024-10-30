@@ -42,6 +42,7 @@ import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
 import RTL from "layouts/rtl";
+import ReporteBanios from "layouts/animals";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -109,6 +110,15 @@ const routes = [
     route: "/rtl",
     icon: <Settings size="12px" />,
     component: <RTL />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Reporte baño",
+    key: "banioreporte",
+    route: "/animals",
+    icon: <Settings size="12px" />,
+    component: <ReporteBanios />,
     noCollapse: true,
   },
   { type: "title", title: "Account Pages", key: "account-pages" },
