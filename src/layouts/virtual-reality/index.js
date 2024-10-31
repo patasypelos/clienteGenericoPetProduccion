@@ -5,8 +5,10 @@ import SoftTypography from 'components/SoftTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import Footer from 'examples/Footer';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  BarChart, Bar,CartesianGrid, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
@@ -21,6 +23,11 @@ function ReporteVentas() {
   const [totalPrecioPurina, setTotalPrecioPurina] = useState(0);
   const [totalPrecioAccesorio, setTotalPrecioAccesorio] = useState(0);
     const [tiposArticulo, setTiposArticulo] = useState([]);
+    const [purinaData, setPurinaData] = useState([]);
+    const [accesorioData, setAccesorioData] = useState([]);
+
+    const [ventasPorMarcaPurina, setVentasPorMarcaPurina] = useState([]);
+    const [ventasPorMarcaAccesorio, setVentasPorMarcaAccesorio] = useState([]);
 
   useEffect(() => {
     // Cargar la lista de tipos de artículo
@@ -31,7 +38,7 @@ function ReporteVentas() {
   }, []);
 
   const handleFilter = () => {
-    debugger;
+    
     let url = `${baseUrl}/VentasController/GetConsultarVentas?fechaInici=${fechaInicio}&fechaFin=${fechaFin}&idArticulo=${articuloSeleccionado}`;
     
 
@@ -40,7 +47,7 @@ function ReporteVentas() {
     .then(response => response.json())
     .then(data => {
       setData(data);
-
+debugger;
           // Calculate total price for PURINA and ACCESORIO separately
           const totalPurina = data
           .filter(venta => venta.nombreTipoArticulo === 'PURINA')
@@ -52,6 +59,42 @@ function ReporteVentas() {
 
         setTotalPrecioPurina(totalPurina);
         setTotalPrecioAccesorio(totalAccesorio);
+
+        // setPurinaData(purinaVentas);
+        // setAccesorioData(accesorioVentas);
+
+
+        
+        // Agrupar ventas por marca y tipo de artículo
+        const groupedPurina = data
+          .filter(venta => venta.nombreTipoArticulo === 'PURINA')
+          .reduce((acc, venta) => {
+            const marca = venta.nombreArticulo;
+            acc[marca] = (acc[marca] || 0) + venta.precio;
+            return acc;
+          }, {});
+
+        const groupedAccesorio = data
+          .filter(venta => venta.nombreTipoArticulo === 'ACCESORIO')
+          .reduce((acc, venta) => {
+            const marca = venta.nombreArticulo;
+            acc[marca] = (acc[marca] || 0) + venta.precio;
+            return acc;
+          }, {});
+
+        // Convertir los datos agrupados en arrays para las gráficas
+        setVentasPorMarcaPurina(Object.keys(groupedPurina).map(marca => ({
+          nombreMarca: marca,
+          totalVentas: groupedPurina[marca]
+        })));
+
+        setVentasPorMarcaAccesorio(Object.keys(groupedAccesorio).map(marca => ({
+          nombreMarca: marca,
+          totalVentas: groupedAccesorio[marca]
+        })));
+
+
+
     })
     .catch(error => setError('Error fetching sales report'));
   };
@@ -170,6 +213,47 @@ function ReporteVentas() {
                 </table>
               </div>
             </Grid>
+
+
+            <SoftBox mt={12}>
+          <Grid container spacing={12}>
+            <Grid item xs={12} md={12}>
+              <SoftTypography variant="h6" fontWeight="medium">
+                Ventas por Marca - PURINA
+              </SoftTypography>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={ventasPorMarcaPurina}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="nombreMarca" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="totalVentas" fill="#003366" />
+                </BarChart>
+              </ResponsiveContainer>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <SoftTypography variant="h6" fontWeight="medium">
+                Ventas por Marca - ACCESORIO
+              </SoftTypography>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={ventasPorMarcaAccesorio}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="nombreMarca" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="totalVentas" fill="#0073e6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </Grid>
+          </Grid>
+        </SoftBox>
+
+
+
+
+
           </Grid>
         </SoftBox>
       </SoftBox>
