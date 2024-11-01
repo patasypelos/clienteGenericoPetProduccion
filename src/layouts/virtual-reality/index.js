@@ -178,6 +178,9 @@ debugger;
         <Grid  item xs={12} md={4}>
           Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}
         </Grid>
+        <Grid item xs={12} md={12}>
+  Ganancia: {(totalPrecioPurina * 0.2 + totalPrecioAccesorio * 0.5).toFixed(0)}
+</Grid>
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <div className='table-responsive'>
