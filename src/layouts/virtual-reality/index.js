@@ -173,7 +173,9 @@ debugger;
       
         <SoftBox>
         <Grid  item xs={12} md={4}>
-          Total PURINA: {totalPrecioPurina.toFixed(0)}
+          Total PURINA: {totalPrecioPurina.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+
+          {/* {totalPrecioPurina.toFixed(0)} */}
         </Grid>
         <Grid  item xs={12} md={4}>
           Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}

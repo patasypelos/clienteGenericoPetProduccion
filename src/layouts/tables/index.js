@@ -322,7 +322,9 @@ function ArticuloTable() {
               style={{ width: "80px", height: "auto" }}
             /></td>
                           <td>{item.idArticulo}</td>
-                          <td>{item.precio}</td>
+                          {/* <td>{item.precio}</td> */}
+                          <td>{item.precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                          </td>
                           <td>{item.cantidadDisponible}</td>
                           <td>{item.tipoArticulo}</td>
                           <td>{item.tipoMarca}</td>
