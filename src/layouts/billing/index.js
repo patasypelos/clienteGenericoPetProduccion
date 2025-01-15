@@ -34,6 +34,8 @@ function Billing() {
     mascota: "",
   });
 
+
+
   const [articulos, setArticulos] = useState([]);
   const [articulosTabla, setArticulosTabla] = useState([]);
   const [articulosTablaEnviar, setArticulosTablaEnviar] = useState([]);
@@ -51,7 +53,7 @@ function Billing() {
   const baseUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
    
-    $('#purinaSelect').select2();
+    $('#tipoPurina').select2();
     $('#articuloSelect').select2();
     $('#bañoSelect').select2();
     $('#mascotaSelect').select2();
@@ -115,6 +117,11 @@ function Billing() {
 
 
   const handleAddArticulo = () => {
+    debugger;
+    console.log("Valor del select directamente:", document.querySelector("select[name='tipoPurina']").value);
+
+
+
     const purinaSeleccionada = purinas.find(p => p.value === formData.tipoPurina)?.text || '';
     const articuloSeleccionado = articulos.find(a => a.value === formData.tipoArticulo)?.text || '';
     const banioSeleccionado = banios.find(b => b.value === formData.tipoBanio)?.text || '';
@@ -196,8 +203,13 @@ function Billing() {
               <select
                 className="form-select"
                 name="tipoPurina"
+                id="tipoPurina"
                 value={formData.tipoPurina}
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
+                onChange={(e) => {
+                  console.log("Evento onChange:", e.target.name, e.target.value);
+                  handleInputChange(e);
+                }}
               >
                 <option value="">Seleccione una purina</option>
                 {purinas.map((purina) => (
