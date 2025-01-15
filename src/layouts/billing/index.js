@@ -120,7 +120,7 @@ function Billing() {
     debugger;
     console.log("Valor del select directamente:", document.querySelector("select[name='tipoPurina']").value);
 
-
+//original
 
     const purinaSeleccionada = purinas.find(p => p.value === formData.tipoPurina)?.text || '';
     const articuloSeleccionado = articulos.find(a => a.value === formData.tipoArticulo)?.text || '';
