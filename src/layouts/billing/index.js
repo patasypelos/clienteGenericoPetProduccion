@@ -23,9 +23,13 @@ import $ from 'jquery';
 import 'select2';
 import 'select2/dist/css/select2.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './select.css';
 
 
 function Billing() {
+
+
+
   const [formData, setFormData] = useState({
     tipoPurina: "",
     tipoArticulo: "",
@@ -53,10 +57,10 @@ function Billing() {
   const baseUrl = process.env.REACT_APP_API_URL;
   useEffect(() => {
    
-    $('#tipoPurina').select2();
-    $('#articuloSelect').select2();
-    $('#bañoSelect').select2();
-    $('#mascotaSelect').select2();
+    // $('#tipoPurina').select2();
+    // $('#articuloSelect').select2();
+    // $('#bañoSelect').select2();
+    // $('#mascotaSelect').select2();
 
     fetch(`${baseUrl}/VentasController/GetConsultarListaPurinas`)
       .then(response => response.json())
@@ -117,7 +121,7 @@ function Billing() {
 
 
   const handleAddArticulo = () => {
-    debugger;
+    
     console.log("Valor del select directamente:", document.querySelector("select[name='tipoPurina']").value);
 
 //original
@@ -193,6 +197,7 @@ function Billing() {
   };
 
   return (
+
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox mt={4}>
@@ -200,8 +205,8 @@ function Billing() {
           <Grid item xs={12} md={6}>
             <SoftBox>
               <SoftTypography variant="h6">Registrar Artículo</SoftTypography>
-              <select
-                className="form-select"
+              <select 
+                className="form-select dropdown-input"
                 name="tipoPurina"
                 id="tipoPurina"
                 value={formData.tipoPurina}
