@@ -13,6 +13,8 @@ import curved6 from "assets/images/curved-images/curved14.jpg";
 
 // Consumir el API
 function SignUp() {
+    const { login } = useAuth(); // Usar el contexto de autenticación para acceder a la función de login
+  
   const [agreement, setAgreement] = useState(true);
   const [Nombre, setNombre] = useState("");
   const [Apellidos, setApellidos] = useState("");
@@ -49,7 +51,7 @@ function SignUp() {
     })
       .then(response => {
       
-     
+     debugger;
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -66,8 +68,10 @@ function SignUp() {
       .then(data => {
 
 debugger;
-        if (data.code === 200) {
+        if (data.token !== "") {
           setSuccess(true);
+          login(data.token); // Guardamos el token en el contexto
+
           // Redireccionar a otra página o limpiar el formulario si es necesario
           navigate("/dashboard");
         } else {

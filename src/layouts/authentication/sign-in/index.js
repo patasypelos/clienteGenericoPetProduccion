@@ -41,15 +41,17 @@ function SignIn() {
         return response.json(); // Convierte la respuesta en un objeto JSON
       })
       .then((data) => {
-        if (data.code === 200) {
+        debugger;
+        if (data.token !== "") {
           // Si el login es exitoso, guardamos el token y redirigimos
           login(data.token); // Guardamos el token en el contexto
           navigate("/dashboard"); // Redirigir al dashboard
         } else {
+          debugger;
           setError(data.message); // Mostrar mensaje de error del servidor
         }
       })
-      .catch((error) => {
+      .catch((error) => {debugger;
         console.error("Error:", error);
         setError("Error fetching data from the server"); // Manejar errores de red o de servidor
       });
