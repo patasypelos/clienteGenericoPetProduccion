@@ -41,7 +41,6 @@ function SignIn() {
         return response.json(); // Convierte la respuesta en un objeto JSON
       })
       .then((data) => {
-        debugger;
         if (data.token !== "") {
           // Si el login es exitoso, guardamos el token y redirigimos
           login(data.token); // Guardamos el token en el contexto

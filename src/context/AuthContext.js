@@ -1,34 +1,30 @@
-import { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types'; // Asegúrate de importar PropTypes
+import React, { createContext, useContext, useState } from "react";
+import PropTypes from "prop-types"; // Importa PropTypes
 
-// Crea el contexto
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-// Crea el proveedor del contexto
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = (userData) => {
-    setUser(userData);
-  };
-
-  const logout = () => {
-    setUser(null);
-  };
+  const login = () => setIsAuthenticated(true);
+  const logout = () => setIsAuthenticated(false);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children} {/* Renderiza los hijos */}
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };
 
-// Validación de las propiedades
+// Validación de tipos con PropTypes
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired, // Validamos que 'children' es un nodo de React y es requerido
+  children: PropTypes.node.isRequired, // children debe ser un nodo de React y es requerido
 };
 
-// Hook para usar el contexto
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
+  }
+  return context;
 };

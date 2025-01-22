@@ -10,6 +10,8 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import Socials from "layouts/authentication/components/Socials";
 import Separator from "layouts/authentication/components/Separator";
 import curved6 from "assets/images/curved-images/curved14.jpg";
+import { useAuth } from "context/AuthContext"; // Importar el contexto de autenticación
+
 
 // Consumir el API
 function SignUp() {

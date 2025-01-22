@@ -1,18 +1,18 @@
-import { Route, Navigate } from "react-router-dom";
-import { useAuth } from "context/AuthContext"; // Usamos el contexto de autenticación
-import PropTypes from 'prop-types'; // Asegúrate de importar PropTypes
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import PropTypes from "prop-types";
 
+const PrivateRoute = ({ children }) => {
+  const { isAuthenticated } = useContext(AuthContext);
 
-// Componente para proteger las rutas
-const PrivateRoute = ({ element, ...rest }) => {
-  const { isAuthenticated } = useAuth(); // Verificar si el usuario está autenticado
-
-  return isAuthenticated ? element : <Navigate to="/authentication/sign-in" />;
+  // Redirige a la página de inicio de sesión si el usuario no está autenticado
+  return isAuthenticated ? children : <Navigate to="/authentication/sign-in" />;
 };
 
-// Validación de propiedades
+// Validación de propiedades con PropTypes
 PrivateRoute.propTypes = {
-    element: PropTypes.element.isRequired, // Validamos que 'element' es un React Element y es requerido
-  };
+  children: PropTypes.node.isRequired, // children debe ser un nodo React y es obligatorio
+};
 
 export default PrivateRoute;
