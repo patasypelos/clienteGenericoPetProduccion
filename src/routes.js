@@ -98,7 +98,8 @@ const routes = [
     protected: true, // Ruta protegida
 
   },
-  { type: "title", title: "Account Pages", key: "account-pages" },
+  { type: "title",
+     title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
     name: "Profile",

@@ -8,12 +8,14 @@ import SoftInput from "components/SoftInput";
 import SoftButton from "components/SoftButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 import { useAuth } from "context/AuthContext"; // Importar el contexto de autenticación
+// import { jwtDecode } from "jwt-decode";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
 
 function SignIn() {
   const { login } = useAuth(); // Usar el contexto de autenticación para acceder a la función de login
+  const { logines } = useAuth(); // Usar el contexto de autenticación para acceder a la función de login
   const [rememberMe, setRememberMe] = useState(true);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -44,6 +46,18 @@ function SignIn() {
         if (data.token !== "") {
           // Si el login es exitoso, guardamos el token y redirigimos
           login(data.token); // Guardamos el token en el contexto
+          logines(data.token); // Guardamos el token en el contexto
+
+          // const token = localStorage.getItem("token");
+          // if (token) {
+          //   const decodedToken = jwtDecode(token);
+          //   const routes = decodedToken.Menus.split(","); // Aquí tienes las rutas extraídas
+          //   console.log("Rutas disponibles:", routes);
+          // }
+
+
+
+
           navigate("/dashboard"); // Redirigir al dashboard
         } else {
           debugger;

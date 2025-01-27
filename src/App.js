@@ -1,42 +1,51 @@
 import { useState, useEffect, useMemo } from "react";
-
-
-
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
 // Soft UI Dashboard React components
 import SoftBox from "components/SoftBox";
-
 // Soft UI Dashboard React examples
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
-
 // Soft UI Dashboard React themes
 import theme from "assets/theme";
 import themeRTL from "assets/theme/theme-rtl";
-
 // RTL plugins
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-
 // Soft UI Dashboard React routes
 import routes from "routes";
-
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
 // Images
 import brand from "assets/images/logopatas.png";
-
 // Importar AuthProvider y PrivateRoute
 import { AuthProvider } from "context/AuthContext"; // Asegúrate de usar la ruta correcta
 import PrivateRoute from "context/PrivateRoute"; // Actualiza la ruta aquí
+import { jwtDecode } from "jwt-decode";
 
 export default function App() {
+    const [menus, setMenus] = useState([]); // Estado para las rutas disponibles
+    console.log("fuera:", menus);
+
+useEffect(() => {
+  const token = localStorage.getItem("token"); // Obtener el token desde el localStorage
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token); // Decodificar el token
+      const availableRoutes = decodedToken.Menus ? decodedToken.Menus.split(",") : [];
+      setMenus(availableRoutes); // Establecer las rutas disponibles solo una vez
+      console.log("fuera:", menus);
+
+    } catch (error) {
+      console.error("Error decodificando el token:", error);
+    }
+  }
+}, []); 
+
+
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
@@ -148,6 +157,28 @@ export default function App() {
         }
         return null;
       });
+
+    // const getRoutes = (allRoutes) =>
+    //   menus.map((menu) => {
+    //     return allRoutes
+    //       .filter((route) => menu.includes(route.key)) // Filtra según los permisos de `menus`
+    //       .map((route) => {
+    //         if (route.collapse) {
+    //           return getRoutes(route.collapse);
+    //         }
+    //         return route.protected ? (
+    //           <Route
+    //             exact
+    //             path={route.route}
+    //             element={<PrivateRoute>{route.component}</PrivateRoute>}
+    //             key={route.key}
+    //           />
+    //         ) : (
+    //           <Route exact path={route.route} element={route.component} key={route.key} />
+    //         );
+    //       });
+    //   });
+    
     
 
     
@@ -229,4 +260,3 @@ export default function App() {
     </AuthProvider>  
   );
 }
-
