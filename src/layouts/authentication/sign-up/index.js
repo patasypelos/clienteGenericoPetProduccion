@@ -53,7 +53,6 @@ function SignUp() {
     })
       .then(response => {
       
-     debugger;
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -69,7 +68,6 @@ function SignUp() {
    
       .then(data => {
 
-debugger;
         if (data.token !== "") {
           setSuccess(true);
           login(data.token); // Guardamos el token en el contexto

@@ -28,7 +28,7 @@ import { jwtDecode } from "jwt-decode";
 
 export default function App() {
     const [menus, setMenus] = useState([]); // Estado para las rutas disponibles
-    console.log("fuera:", menus);
+    console.log("menus afuera:", menus);
 
 useEffect(() => {
   const token = localStorage.getItem("token"); // Obtener el token desde el localStorage
@@ -92,53 +92,9 @@ useEffect(() => {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  // const getRoutes = (allRoutes) =>
-  //   allRoutes.map((route) => {
-  //     if (route.collapse) {
-  //       return getRoutes(route.collapse);
-  //     }
-
-  //     if (route.route) {
-  //       // Usa PrivateRoute para rutas protegidas
-  //       return route.protected ? (
-  //         <Route
-  //           exact
-  //           path={route.route}
-  //           element={<PrivateRoute>{route.component}</PrivateRoute>}
-  //           key={route.key}
-  //         />
-  //       ) : (
-  //         <Route exact path={route.route} element={route.component} key={route.key} />
-  //       );
-  //     }
-
-  //     return null;
-  //   });
-
-
-  // const getRoutes = (allRoutes) =>
-    
-  //   allRoutes.map((route) => {
-  //     if (route.collapse) {
-  //       return getRoutes(route.collapse);
-  //     }
-  //     if (route.route) {
-  //       return route.protected ? (
-       
-  //         <Route
-  //           exact
-  //           path={route.route}
-  //           element={<PrivateRoute>{route.component}</PrivateRoute>}
-  //           key={route.key}
-  //         />
-  //       ) : (
-  //         <Route exact path={route.route} element={route.component} key={route.key} />
-  //       );
-  //     }
-  //     return null;
-  //   });
 
     const getRoutes = (allRoutes) =>
+    
       allRoutes.map((route) => {
         if (route.collapse) {
           return getRoutes(route.collapse);
@@ -158,26 +114,6 @@ useEffect(() => {
         return null;
       });
 
-    // const getRoutes = (allRoutes) =>
-    //   menus.map((menu) => {
-    //     return allRoutes
-    //       .filter((route) => menu.includes(route.key)) // Filtra según los permisos de `menus`
-    //       .map((route) => {
-    //         if (route.collapse) {
-    //           return getRoutes(route.collapse);
-    //         }
-    //         return route.protected ? (
-    //           <Route
-    //             exact
-    //             path={route.route}
-    //             element={<PrivateRoute>{route.component}</PrivateRoute>}
-    //             key={route.key}
-    //           />
-    //         ) : (
-    //           <Route exact path={route.route} element={route.component} key={route.key} />
-    //         );
-    //       });
-    //   });
     
     
 
@@ -218,7 +154,7 @@ useEffect(() => {
                   color={sidenavColor}
                   brand={brand}
                   brandName="PATAS & PELOS"
-                  routes={routes}
+                  routes={routes.filter((route) => menus.includes(route.key))} // Solo rutas permitidas
                   onMouseEnter={handleOnMouseEnter}
                   onMouseLeave={handleOnMouseLeave}
                 />
@@ -242,7 +178,7 @@ useEffect(() => {
                 color={sidenavColor}
                 brand={brand}
                 brandName="PATAS & PELOS"
-                routes={routes}
+                routes={routes.filter((route) => menus.includes(route.key))} // Solo rutas permitidas
                 onMouseEnter={handleOnMouseEnter}
                 onMouseLeave={handleOnMouseLeave}
               />

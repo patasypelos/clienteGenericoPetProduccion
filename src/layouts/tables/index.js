@@ -21,6 +21,7 @@ function ArticuloTable() {
   const [error, setError] = useState(null);
 
   // Estados NO
+  const [porcentaje, setporcentaje] = useState('');
   const [precio, setPrecio] = useState('');
   const [cantidadDisponible, setCantidadDisponible] = useState('');
   const [tipoArticulo, setTipoArticulo] = useState('');
@@ -99,6 +100,7 @@ function ArticuloTable() {
       // Usar FormData para enviar imagen y datos del artículo
       const formData = new FormData();
       formData.append('Precio', formattedPrecio);
+      formData.append('Porcentaje', porcentaje);
       formData.append('Cantidad', cantidadDisponible);
       formData.append('TipoArticulo', tipoArticulo);
       formData.append('TipoMarca', tipoMarca);
@@ -111,7 +113,6 @@ function ArticuloTable() {
         body: formData, // Enviar como FormData
       })
       .then(response => {
-        debugger;
         
               if (response.status === 204) {
                 setError('La marca ya se en cuentra registrada.');
@@ -130,6 +131,7 @@ function ArticuloTable() {
 
           setData(updatedData);
           setPrecio('');
+          setporcentaje('');
           setCantidadDisponible('');
           setTipoArticulo('');
           setTipoMarca('');
@@ -204,6 +206,17 @@ function ArticuloTable() {
               </SoftTypography>
               <SoftBox display="flex" flexWrap="wrap" mt={3}>
            
+                  <SoftBox mb={2}>
+                <input
+                type="number"
+                  placeholder="PORCENTAJE"
+                  name="porcentaje"
+                  value={porcentaje}
+                  className='form-control'
+                  required
+                  onChange={(e) => setporcentaje(e.target.value)}
+                />
+              </SoftBox>
                   <SoftBox mb={2}>
                 <input
                 type="number"
@@ -307,6 +320,7 @@ function ArticuloTable() {
                       <th>Número</th>
                       <th>Precio</th>
                       <th>Cantidad Disponible</th>
+                      <th>Porcentaje</th>
                       <th>Tipo Artículo</th>
                       <th>Tipo Marca</th>
                       <th>Acciones</th>
@@ -326,6 +340,7 @@ function ArticuloTable() {
                           <td>{item.precio.toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                           </td>
                           <td>{item.cantidadDisponible}</td>
+                          <td>{item.porcentaje}</td>
                           <td>{item.tipoArticulo}</td>
                           <td>{item.tipoMarca}</td>
                           <td>
@@ -368,6 +383,14 @@ function ArticuloTable() {
             <Typography variant="h6" component="h2">
               Editar Artículo
             </Typography>
+            <TextField
+              label="Porcentaje"
+              name="porcentaje"
+              value={selectedArticulo.porcentaje || ''}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+            />
             <TextField
               label="Precio"
               name="precio"

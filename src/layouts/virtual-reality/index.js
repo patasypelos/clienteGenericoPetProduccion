@@ -28,6 +28,7 @@ function ReporteVentas() {
 
     const [ventasPorMarcaPurina, setVentasPorMarcaPurina] = useState([]);
     const [ventasPorMarcaAccesorio, setVentasPorMarcaAccesorio] = useState([]);
+    const [totalGanancia, setTotalGanancia] = useState(0);
 
   useEffect(() => {
     // Cargar la lista de tipos de artículo
@@ -47,7 +48,6 @@ function ReporteVentas() {
     .then(response => response.json())
     .then(data => {
       setData(data);
-debugger;
           // Calculate total price for PURINA and ACCESORIO separately
           const totalPurina = data
           .filter(venta => venta.nombreTipoArticulo === 'PURINA')
@@ -94,6 +94,13 @@ debugger;
         })));
 
 
+   // Calcular ganancia total basada en el porcentaje de cada venta
+   const gananciaTotal = data.reduce((total, venta) => {
+    const porcentaje = venta.porcentaje || 0; // Verificar si existe el porcentaje
+    const ganancia = venta.precio * (porcentaje / 100);
+    return total + ganancia;
+  }, 0);
+ setTotalGanancia(gananciaTotal);
 
     })
     .catch(error => setError('Error fetching sales report'));
@@ -181,7 +188,7 @@ debugger;
           Total ACCESORIO: {totalPrecioAccesorio.toFixed(0)}
         </Grid>
         <Grid item xs={12} md={12}>
-  Ganancia: {(totalPrecioPurina * 0.2 + totalPrecioAccesorio * 0.5).toFixed(0)}
+  Ganancia: {(totalGanancia).toFixed(0)}
 </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12}>
