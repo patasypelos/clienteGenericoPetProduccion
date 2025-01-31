@@ -36,14 +36,14 @@ import pattern from "assets/images/shapes/pattern-lines.svg";
 function IllustrationLayout({ color, header, title, description, illustration, children }) {
   return (
     <PageLayout background="white">
-      <DefaultNavbar
+      {/* <DefaultNavbar
         routes={pageRoutes}
         action={{
           type: "external",
           route: "https://creative-tim.com/product/soft-ui-dashboard-pro-react",
           label: "buy now",
         }}
-      />
+      /> */}
       <Grid container>
         <Grid item xs={11} sm={8} md={6} lg={4} xl={3} sx={{ mx: "auto" }}>
           <SoftBox display="flex" flexDirection="column" justifyContent="center" height="100vh">

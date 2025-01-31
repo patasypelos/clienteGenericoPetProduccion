@@ -143,18 +143,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} />
+          {/* <Breadcrumbs icon="home" title={route[route.length - 1]} route={route} light={light} /> */}
         </SoftBox>
         {isMini ? null : (
           <SoftBox sx={(theme) => navbarRow(theme, { isMini })}>
             <SoftBox pr={1}>
               <SoftInput
-                placeholder="Type here..."
+                placeholder="Ingresar busqueda..."
                 icon={{ component: "search", direction: "left" }}
               />
             </SoftBox>
             <SoftBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in">
+              <Link to="/authentication/sign-in"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                
+                }}>
                 <IconButton sx={navbarIconButton} size="small">
                   <Icon
                     sx={({ palette: { dark, white } }) => ({
@@ -168,7 +172,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     fontWeight="medium"
                     color={light ? "white" : "dark"}
                   >
-                    Sign in
+                    Cerrar sesión
                   </SoftTypography>
                 </IconButton>
               </Link>

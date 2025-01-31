@@ -64,9 +64,9 @@ function SignIn() {
           setError(data.message); // Mostrar mensaje de error del servidor
         }
       })
-      .catch((error) => {debugger;
+      .catch((error) => {
         console.error("Error:", error);
-        setError("Error fetching data from the server"); // Manejar errores de red o de servidor
+        setError("Comuniquese con el administrador del sistema."); // Manejar errores de red o de servidor
       });
   };
 
